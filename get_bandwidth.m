@@ -1,7 +1,7 @@
 function [band,peak] = get_bandwidth(E,A,b,c)
 
-f=linspace(10^4,10^10,10^4);
-w=linspace(0,0,10^4);
+f=linspace(1*10^7,2*10^8,2*10^3);
+w=linspace(0,0,2*10^3);
 
 
 f_im=1i.*f;

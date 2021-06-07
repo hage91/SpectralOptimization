@@ -1,4 +1,4 @@
-function [] = bodeplot(E,A,b,c,Col_val)
+function [] = bodeplot(E,A,b,c,Col_val,type)
 
 %[p,k]=get_bandwidth(E,A,b,c)
 
@@ -15,8 +15,9 @@ end
 w=w-w(1);
 
 
-semilogx(f,w,'-','Color',Col_val,'LineWidth',3);
+semilogx(f,w,type,'Color',Col_val,'LineWidth',3);
 ylim([-10 20])
+
 
 
 

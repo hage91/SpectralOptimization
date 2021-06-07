@@ -15,7 +15,6 @@ gloquo=pi/2; %%quotient aus Fehler und Schrittweite
 gminglo=1;
 tglo=0;
 
-%isens=0;
 icond=0;
 
 iglo=0;
@@ -23,13 +22,12 @@ jglo=0;
 tmin=-cmax;
 
 [S,T,iplus,iminus,invipl,invimin,V1] = get_WCF(Et,At,ity,num);
-%% hier nochmal vereinfachen, wir brauchen nicht alle ausgaben...
-%sensitivität auch direkt?
 
 
-%% Run over 1..11 nodes
-for i=1:11
-   for j=i:11
+
+%% We vary over indices 1..27 which correspond to interior nodes
+for i=1:27
+   for j=i:27
        v=zeros(sz,1);
         v(j)=-1; v(i)=1; 
         uinf=S*(At\v);
@@ -134,29 +132,23 @@ t=norm(q,2)^2/(uv'*q);%(uv'*q)/(norm(uv,2)^2)
               
 end 
                   
- %% Verification step: We check if the eigenvalues are inside 
- % the prescribed sector: result: if in sector then keep otherwise 
- % remove; set tmin to the old tmin
- 
- 
-        if gmin > 0 && gmin< eps % I think this condition is obsolete
+       
+        if gmin > 0 && gmin< eps
                 
         b=zeros(sz,1);
         b(i)=1; b(j)=-1;
+       % Enew=;
        
        Eval=eig(At,Et+tmin*(b*b'));
        
-       max=pi;  %%komisch; funktioniert aber nicht immer
+       max=pi;
                 for i4=1 : sz
-                    
-                   
-                      if angle(Eval(i4))<max && imag(Eval(i4))>0
+                       if angle(Eval(i4))<max && imag(Eval(i4))>0
                       
                            max=angle(Eval(i4));%abs(imag(Eval(i4))/real(Eval(i4)));
-                       
-                      end 
+                       end 
                 end
-                %% problem: hier wird schon das beste im Sektor gewählt
+                
                   icond=icond+1;
                if max>gloquo && tmin<0 %% müsste hier dann auch bandbreite überprüfen
                    
@@ -191,7 +183,7 @@ b=zeros(sz,1); b(iglo)=1; b(jglo)=-1;
 Eo=Et+tglo*(b*b');
 end
 if iglo+jglo==0
-Eo=Et; iglo=1; jglo=1; gloquo=ang_ratio;
+Eo=Et; iglo=1; jglo=1; tglo=0; gloquo=ang_ratio;
 %gloquo=(ang_ratio+angle(V1(iplus(1),iplus(1))))/2;
 end
 
